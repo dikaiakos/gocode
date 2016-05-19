@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+
+\usepackage{ucyletter}
+\usepackage{times}
+
+%% inclusion of packages
+
+
+%% paragraph setting 
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{5pt}
+
+%% style-specific parameters
+\todayis{\today}
+\myname{Marios D. Dikaiakos}
+\myemail{mdd@cs.ucy.ac.cy}
+\myrank{Associate Professor}
+\myweb{www.cs.ucy.ac.cy/$\sim$mdd}
+\myphone{+357-22892720}
+\myfax{+357-22892701}
+\mycountry{Cyprus}
+\mytitle{}
+\myCCparties{Students, Adjuncts, and Associates.}
+\mypostscript{This is FYI.}
+\myenclosures{Nothing enclosed with this letter.}
+
+
+\begin{document}
+\recipient{%
+\LaTeX \ \& \TeX \ Users \\
+Department of Computer Science \\
+University of Cyprus \\
+CY-1678, Nicosia, Cyprus
+}
+
+\begin{letter}{Dear Colleagues,}
+
+This is a sample letter written with the new style file entitled 
+``diletter.sty''. This style file can be used as a $package$ with the 
+\LaTeXe  distributions (used in the departmental Unix cluster) as 
+well as those used in contemporary Linux distributions.
+
+In order to use this style-file, you want to include 
+``diAthina.ps'' into the directory containing
+the ``diletter.sty'' file. 
+The ``diAthina.ps'' post/ghost-script file  depicts Athena-The-Goddess,
+the official logo of the University.
+
+The intuitive user-invoked commands included in the package are:
+\begin{enumerate}
+\item {\sl $\backslash$myname\{\}:} 
+	The first and last name of the writer.
+\item {\sl $\backslash$myemail\{\}:} 
+	The writer's e-mail address. Optional use.
+\item {\sl $\backslash$myweb\{\}:} 
+	The writer's web-site. Optional use.
+\item {\sl $\backslash$mytitle\{\}:} 
+	The ``official'' title of the letter-writer (e.g., Ms., Mr., 
+	Dr., Prof., etc.). It can remain empty.
+\item {\sl $\backslash$myrank\{\}:} 
+		The rank of the writer (e.g., Lecturer, Professors, etc.). 	
+		Optional use.
+\item {\sl $\backslash$todayis\{\}:} 
+	The date can be redefined with this command; 
+	the default is today's date.
+\item {\sl $\backslash$mydepart\{\}:} 
+	Set the department's name (if other than the Department 
+	of Informatics and Telecommunications).
+\item {\sl $\backslash$myphone\{\}:}  
+	The telephone number of the sender. Optional use.
+\item {\sl $\backslash$myfax\{\}:} 
+	The FAX number of the writer. Optional use.
+\item {\sl $\backslash$mycountry\{\}:} If set to ``Greece'', 
+	the country name will appear at the end of the address.
+	Recommended for letters going outside of the country.
+\item {\sl $\backslash$recipient\{\}:} 
+	The name and the address if the recipient; if necessary,   
+	lines must be separated with two $\backslash\backslash$.
+\item {\sl $\backslash$myopening\{\}:} 
+	This contains the opening statement of the letter.
+\item {\sl $\backslash$myclosing\{\}:} 
+	The closing (if other than ``Sincerely'').
+\item {\sl $\backslash$myenclosures\{\}:} 
+	Indication of whether there are enclosed documents. State the documents,
+	if there are any.
+\item {\sl $\backslash$myCCparties\{\}:} 
+	Define the parties to whom the letter has been carbon copied. Optional 
+	use.
+\item {\sl $\backslash$mypostscript\{\}:} 
+	Indicate any postscript for the letter; rarely used. 
+\item {\sl $\backslash$mydoublespace:} Use this command in the body of the 
+	letter should you want to spread out the text.
+\end{enumerate}
+
+Hope you find this style useful in your letter writing. 
+If you want the file modified, feel free to e-mail me your suggestions.
+
+\myclosing{Yours,}
+
+\end{letter}
+\end{document}
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func main() {
+	counts := make(map[string]int)
+	files := os.Args[1:]
+	if len(files) == 0 {
+		countLines(os.Stdin, counts)
+	} else {
+		for _, arg := range files {
+			f, err := os.Open(arg)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "dup2: %v\n", err)
+				continue
+			}
+			countLines(f, counts)
+			f.Close()
+		}
+	}
+	for line, n := range counts {
+		if n > 1 {
+			fmt.Printf("%d\t%s\n", n, line)
+		}
+	}
+}
+
+func countLines(f *os.File, counts map[string]int) {
+	input := bufio.NewScanner(f)
+	for input.Scan() {
+		counts[input.Text()]++
+	}
+}
